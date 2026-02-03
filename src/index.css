@@ -69,7 +69,7 @@
   }
 
   .nav-hover-btn {
-    @apply relative ms-10 font-general text-xs uppercase text-blue-50 cursor-pointer;
+    @apply relative ms-10 font-general text-xs uppercase text-blue-50 cursor-pointer ;
   }
 
   .nav-hover-btn::after {
