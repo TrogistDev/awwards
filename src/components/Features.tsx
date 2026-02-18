@@ -1,10 +1,20 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { TiLocationArrow } from "react-icons/ti";
+interface BentoTiltProps {
+  children: React.ReactNode;
+  className?: string;
+}
 
-const BentoTilt = ({children, className = ""}) => {
+interface BentoCardProps {
+  src: string;
+  title: React.ReactNode;
+  description?: string;
+}
+
+const BentoTilt = ({children, className = ""}: BentoTiltProps) => {
   const [transformStyle, setTransformStyle] = useState("")
-  const itemRef = useRef()
-  const handleMouseMove = (e) => {
+  const itemRef = useRef<HTMLDivElement>(null)
+  const handleMouseMove = (e:React.MouseEvent) => {
 
     if (!itemRef.current) return
     const {left,top, width, height} = itemRef.current.getBoundingClientRect()
@@ -14,16 +24,17 @@ const BentoTilt = ({children, className = ""}) => {
     const tiltY = (relativeX - 0.5) * -5
     const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(0.98, 0.98, 0.98)`
     setTransformStyle(newTransform)
+    
   }
-  const handleMouseLeave = (e) => {
-    setTransformStyle("")
+  const handleMouseLeave = () => {
+    return setTransformStyle("")
   }
   return ( 
     <div className={className} ref={itemRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={{transform: transformStyle}}>{children}</div>
   )
 }
 
-const BentoCard = ({ src, title, description }) => {
+const BentoCard = ({ src, title, description }: BentoCardProps) => {
   return (
     <div className="relative size-full">
       <video
