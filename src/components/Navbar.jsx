@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { TiLocationArrow } from "react-icons/ti";
 import {useWindowScroll} from "react-use"
+import { gsap } from "gsap";
 
 const navItems = ["Nexus", "Vault", "Prologue", "About", "Contact"];
 
@@ -19,9 +20,24 @@ const [isNavVisible, setIsNavVisible] = useState(true);
     if(currentScrollY === 0 ){
       setIsNavVisible(true);
       navContainerRef.current.classList.remove("floating-nav")
+    } else if (currentScrollY > lastScrollY){
+      setIsNavVisible(false)
+      navContainerRef.current.classList.add("floating-nav")
+    } else if(currentScrollY < lastScrollY){
+      setIsNavVisible(true)
+      navContainerRef.current.classList.add("floating-nav")
     }
-
-  },[currentScrollY])
+setLastScrollY(currentScrollY)
+  },
+  
+  [currentScrollY, lastScrollY])
+  useEffect(() => {
+    gsap.to(navContainerRef.current,{
+      y: isNavVisible ? 0 : -100,
+      opacity: isNavVisible ? 1 : 0,
+      duration: 0.2
+    })
+  }, [isNavVisible])
 
   const toggleAudioIndicator = () => {
     // Functionality to be implemented
@@ -73,7 +89,7 @@ const [isNavVisible, setIsNavVisible] = useState(true);
               <audio
                 ref={audioElementRef}
                 className="hidden"
-                src="/public/audio/loop.mp3"
+                src="/audio/loop.mp3"
                 loop
               />
               {[1, 2, 3, 4].map((bar) => (
