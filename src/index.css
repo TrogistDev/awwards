@@ -95,6 +95,7 @@
 
   .mask-clip-path {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    will-change: transform, width, height;
   }
 
   .hero-heading {
